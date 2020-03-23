@@ -287,25 +287,38 @@ class SqlQueryBuilder implements \IteratorAggregate
 
     /**
      * @param string $table
-     * @param string $condition
-     * @param string $type
+     * @param string|array $condition
+     * @param bool $and
      *
      * @return SqlQueryBuilder
      */
     public function join(
         string $table,
-        string $condition, string  $type = 'inner'): self
+        $condition,
+        bool $and = true,
+        string $type = 'inner'
+    ): self
     {
-        $this->joins[$type][] = [$table, $condition];
+        $this->joins[$type][] = [
+            $table,
+            new ConditionBlock($condition, $and)
+        ];
 
         return $this;
     }
 
-    public function leftJoin(string $table, string $condition, string  $type = 'left'): self
+    public function leftJoin(
+        string $table,
+        $condition,
+        bool $and = true
+    ): self
     {
-        $this->joins[$type][] = [$table, $condition];
-
-        return $this;
+        return $this->join(
+            $table,
+            $condition,
+            $and,
+            'left'
+        );
     }
 
     /**

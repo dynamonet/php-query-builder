@@ -12,7 +12,7 @@ class ConditionBlock
     protected $and;
     protected $bindings;
 
-    public function __construct(array $conditions, bool $and = true)
+    public function __construct($conditions, bool $and = true)
     {
         $this->and = $and;
         $this->bindings = [];
@@ -47,10 +47,14 @@ class ConditionBlock
     /**
      * Adds new conditions to the existing ones
      */
-    public function append(array $conditions)
+    public function append($condition)
     {
-        foreach($conditions as $key => $value){
-            $this->conditions->push($this->parseKeyValueCondition($key, $value));
+        if(is_array($condition)){
+            foreach($condition as $key => $value){
+                $this->conditions->push($this->parseKeyValueCondition($key, $value));
+            }
+        } else {
+            $this->conditions->push($condition);
         }
     }
 
