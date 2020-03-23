@@ -7,12 +7,16 @@ use Dynamo\QueryBuilder\SqlQueryBuilder as Query;
 
 $users = (new Query)
   ->select('*') // This is the default select
-  ->from('users')
+  ->from('users u')
+  ->leftJoin('posts p',[
+    'p.user_id' => 'u.id',
+    'p.trashed' => null
+  ]) // translates to: LEFT JOIN posts p ON p.user_id = u.id AND p.trashed IS NULL
   ->where([
     'role' => 'ADMIN', // translates to "role = ?", where "?" will be securely replaced by the PDO layer
     "age > $minAge", // insecure! $minAge will not be prepared! However, we allow this form for convenience
     'age >' => $minAge, // better, and prepareable
-    [ 'age', '<=', $maxAge ], // field-operator-value array if you prefer, and PDO
+    [ 'age', '<=', $maxAge ], // field-operator-value array if you prefer
     'age BETWEEN' => [ $minAge, $maxAge ], // even better
   ], false) // false "OR's" all the previous conditions. Default is true, which will "AND" all the conditions 
   ->fetchAll(); // Fetches all the results
