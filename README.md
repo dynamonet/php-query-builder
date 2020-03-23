@@ -9,7 +9,7 @@ $users = (new Query)
   ->select('*') // This is the default select
   ->from('users u')
   ->leftJoin('posts p',[
-    'p.user_id' => 'u.id',
+    'p.user_id = u.id',
     'p.trashed' => null
   ]) // translates to: LEFT JOIN posts p ON p.user_id = u.id AND p.trashed IS NULL
   ->where([
@@ -21,6 +21,9 @@ $users = (new Query)
   ], false) // false "OR's" all the previous conditions. Default is true, which will "AND" all the conditions 
   ->fetchAll(); // Fetches all the results
 ```
+
+#### A warning on JOINs with array conditions
+Notice that in the previous example, inside the join method, the first condition is 'p.user_id = u.id'  instead of the more beatiful form 'p.user_id' => 'u.id', this is because the latter would have be translated to "p.user_id = 'u.id'", matching the posts where user_id is equal to the literal string "u.id" (not what we want). 
 
 ## Working with PDO connections
 
@@ -38,7 +41,7 @@ Query::setPdo($pdo);
 $query = (new Query()) // this will use the static PDO instance.
 ```
 
-### Installing
+## Install
 
 ```php
 composer require dynamonet/query-builder
