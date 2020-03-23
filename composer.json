@@ -1,0 +1,27 @@
+{
+    "name": "dynamonet/query-builder",
+    "description": "Fluent, flexible and lightweight SQL Query Builder for PHP 7.1 (or later)",
+    "type": "library",
+    "require": {
+        "php" : "^7.1",
+        "ext-PDO": "^7.1",
+        "ext-ds": "^1.2",
+        "php-ds/php-ds": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dynamo\\QueryBuilder\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eduardo Rodríguez",
+            "email": "eduardo@dynamonet.com.ar"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
